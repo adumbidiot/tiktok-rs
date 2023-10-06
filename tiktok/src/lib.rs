@@ -64,16 +64,25 @@ mod test {
                 .get_feed(Some(video_id))
                 .await
                 .expect("failed to get post");
-            dbg!(&feed_cursor);
+            let entry = feed_cursor.aweme_list.first().expect("missing entry");
+            assert!(entry.aweme_id == video_id);
+
+            let download_url = entry
+                .video
+                .download_addr
+                .url_list
+                .first()
+                .expect("missing download url");
+            client
+                .client
+                .get(download_url.as_str())
+                .send()
+                .await
+                .expect("failed to send request")
+                .error_for_status()
+                .expect("invalid status code")
+                .bytes()
+                .await.expect("failed to download");
         }
-        /*
-        client
-            .client
-            .get(download_url.as_str())
-            .send()
-            .await
-            .expect("failed to send request")
-            .error_for_status()
-            .expect("invalid status code").bytes().await;*/
     }
 }

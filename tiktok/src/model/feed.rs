@@ -1,3 +1,4 @@
+use url::Url;
 /// A cursor for a feed.
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct FeedCursor {
@@ -11,6 +12,28 @@ pub struct AwemeListEntry {
     /// The post id
     #[serde(with = "serde_as_string")]
     pub aweme_id: u64,
+
+    /// The description
+    pub desc: Box<str>,
+
+    pub video: Video,
+}
+
+/// Video data
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct Video {
+    /// The default video source?
+    pub play_addr: VideoSource,
+
+    /// The download video source?
+    pub download_addr: VideoSource,
+}
+
+/// A video source
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct VideoSource {
+    /// A list of urls?
+    pub url_list: Vec<Url>,
 }
 
 mod serde_as_string {
