@@ -1,14 +1,15 @@
 use url::Url;
+
 /// A cursor for a feed.
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct FeedCursor {
-    /// The list of posts?
-    pub aweme_list: Vec<AwemeListEntry>,
+    /// The list of posts
+    pub aweme_list: Vec<Post>,
 }
 
-/// An Aweme list entry
+/// A Post
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub struct AwemeListEntry {
+pub struct Post {
     /// The post id
     #[serde(with = "serde_as_string")]
     pub aweme_id: u64,
