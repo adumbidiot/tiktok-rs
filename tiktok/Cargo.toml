@@ -1,0 +1,14 @@
+[package]
+name = "tiktok-rs"
+version = "0.0.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+reqwest = { version = "0.11.22", default-features = false }
+
+[features]
+default = ["native-tls"]
+
+native-tls = ["reqwest/native-tls"]
+rustls-tls = ["reqwest/rustls-tls"]
