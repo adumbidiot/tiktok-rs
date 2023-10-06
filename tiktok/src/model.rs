@@ -1,4 +1,4 @@
-mod post_page;
+mod scraped_post_page;
 
-pub use self::post_page::FromHtmlError as InvalidPostPageError;
-pub use self::post_page::PostPage;
+pub use self::scraped_post_page::FromHtmlError as InvalidScrapedPostPageError;
+pub use self::scraped_post_page::ScrapedPostPage;

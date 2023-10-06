@@ -1,10 +1,11 @@
 use crate::Error;
-use crate::PostPage;
+use crate::ScrapedPostPage;
 use reqwest::header::HeaderMap;
 use reqwest::header::HeaderValue;
 use scraper::Html;
+use url::Url;
 
-const USER_AGENT_STR: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36";
+const USER_AGENT_STR: &str = "Mozilla/5.0";
 
 static ACCEPT_VALUE: HeaderValue = HeaderValue::from_static("*/*");
 static ACCEPT_ENCODING_VALUE: HeaderValue = HeaderValue::from_static("identity;q=1, *;q=0");
@@ -66,11 +67,50 @@ impl Client {
         .await?)
     }
 
-    /// Get a tiktok post.
-    pub async fn get_post(&self, url: &str) -> Result<PostPage, Error> {
+    /// Scrape a tiktok post.
+    pub async fn scrape_post(&self, url: &str) -> Result<ScrapedPostPage, Error> {
         Ok(self
-            .get_html(url, |html| PostPage::from_html(&html))
+            .get_html(url, |html| ScrapedPostPage::from_html(&html))
             .await??)
+    }
+
+    /// Get a post.
+    pub async fn get_post(&self, video_id: u64) -> Result<serde_json::Value, Error> {
+        let api_host = "api16-normal-c-useast1a.tiktokv.com";
+        let app_name = "trill";
+        let version_name = "26.1.3";
+        let version_code = "260103";
+
+        let url = format!("https://{api_host}/aweme/v1/feed/");
+        // This should always be valid
+        let mut url = Url::parse(&url).unwrap();
+        {
+            let mut query_pairs = url.query_pairs_mut();
+            query_pairs.append_pair("aweme_id", itoa::Buffer::new().format(video_id));
+
+            query_pairs.append_pair("version_name", version_name);
+            query_pairs.append_pair("version_code", version_code);
+            query_pairs.append_pair("build_number", version_name);
+            query_pairs.append_pair("manifest_version_code", version_code);
+            query_pairs.append_pair("update_version_code", version_code);
+        }
+
+        let user_agent = format!("com.ss.android.ugc.{app_name}/{version_code} (Linux; U; Android 13; en_US; Pixel 7; Build/TD1A.220804.031; Cronet/58.0.2991.0)");
+
+        let json: serde_json::Value = self
+            .client
+            .get(url)
+            .header(reqwest::header::ACCEPT, "application/json")
+            .header(reqwest::header::USER_AGENT, user_agent)
+            .send()
+            .await?
+            .error_for_status()?
+            .json()
+            .await?;
+            
+        
+            
+        Ok(json)
     }
 }
 

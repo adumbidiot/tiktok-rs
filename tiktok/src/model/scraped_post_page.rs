@@ -22,13 +22,13 @@ pub enum FromHtmlError {
 
 /// A post page
 #[derive(Debug)]
-pub struct PostPage {
+pub struct ScrapedPostPage {
     /// ?
     pub sigi_state: SigiState,
 }
 
-impl PostPage {
-    /// Parse a [`PostPage`] from html.
+impl ScrapedPostPage {
+    /// Parse a [`ScrapedPostPage`] from html.
     pub(crate) fn from_html(html: &Html) -> Result<Self, FromHtmlError> {
         let sigi_state_script_str = html
             .select(&SIGI_PERSISTED_DATA_SCRIPT_SELECTOR)
@@ -40,19 +40,6 @@ impl PostPage {
             serde_json::from_str(sigi_state_script_str).map_err(FromHtmlError::InvalidSigiState)?;
 
         Ok(Self { sigi_state })
-    }
-
-    /// Get the item module post for this post page.
-    pub fn get_item_module_post(&self) -> Option<&ItemModulePost> {
-        self.sigi_state.item_module.posts.values().next()
-    }
-
-    /// Get the video download url for the current post, if it exists.
-    pub fn get_video_download_url(&self) -> Option<&Url> {
-        let item_module_post = self.get_item_module_post()?;
-        let video = &item_module_post.video;
-
-        Some(&video.download_addr)
     }
 }
 

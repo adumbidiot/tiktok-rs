@@ -2,8 +2,8 @@ mod client;
 mod model;
 
 pub use self::client::Client;
-pub use self::model::InvalidPostPageError;
-pub use self::model::PostPage;
+pub use self::model::InvalidScrapedPostPageError;
+pub use self::model::ScrapedPostPage;
 pub use url::Url;
 
 #[derive(Debug, thiserror::Error)]
@@ -16,27 +16,27 @@ pub enum Error {
     #[error(transparent)]
     TokioJoin(#[from] tokio::task::JoinError),
 
-    /// Failed to parse a [`PostPage`]
+    /// Failed to parse a [`ScrapedPostPage`]
     #[error("invalid post page")]
-    InvalidPostPage(#[from] InvalidPostPageError),
+    InvalidScrapedPostPage(#[from] InvalidScrapedPostPageError),
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
 
-    #[tokio::test]
-    async fn download_post() {
-        // Broken URLs.
-        // Were they deleted?
-        // Old URL format?
-        // "https://vm.tiktok.com/TTPdrksrdc/"
-        // "https://www.tiktok.com/t/ZTRQsJaw1/"
+    // Broken URLs.
+    // Were they deleted?
+    // Old URL format?
+    // "https://vm.tiktok.com/TTPdrksrdc/"
+    // "https://www.tiktok.com/t/ZTRQsJaw1/"
+    const POST_URLS: &[&str] = &["https://www.tiktok.com/@von.jakoba/video/7270331232595021098"];
 
-        let urls = ["https://www.tiktok.com/@von.jakoba/video/7270331232595021098"];
+    #[tokio::test]
+    async fn scrape_post() {
         let client = Client::new();
-        for url in urls {
-            let post = client.get_post(url).await.expect("failed to get post");
+        for url in POST_URLS {
+            let post = client.scrape_post(url).await.expect("failed to get post");
             let _item_id = post
                 .sigi_state
                 .item_module
@@ -44,18 +44,31 @@ mod test {
                 .keys()
                 .next()
                 .expect("missing item_id");
-            let download_url = post.get_video_download_url().expect("missing download url");
-            dbg!(download_url.as_str());
-
-            /*
-            client
-                .client
-                .get(download_url.as_str())
-                .send()
-                .await
-                .expect("failed to send request")
-                .error_for_status()
-                .expect("invalid status code").bytes().await;*/
         }
+    }
+
+    #[tokio::test]
+    async fn get_post() {
+        let client = Client::new();
+        for url in POST_URLS {
+            let video_id = Url::parse(url)
+                .expect("failed to parse url")
+                .path_segments()
+                .expect("missing path")
+                .next_back()
+                .expect("missing video id")
+                .parse()
+                .expect("invalid video id");
+            client.get_post(video_id).await.expect("failed to get post");
+        }
+        /*
+        client
+            .client
+            .get(download_url.as_str())
+            .send()
+            .await
+            .expect("failed to send request")
+            .error_for_status()
+            .expect("invalid status code").bytes().await;*/
     }
 }
