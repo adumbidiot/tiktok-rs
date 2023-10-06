@@ -6,6 +6,8 @@ use scraper::Html;
 
 const USER_AGENT_STR: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36";
 
+static ACCEPT_VALUE: HeaderValue = HeaderValue::from_static("*/*");
+static ACCEPT_ENCODING_VALUE: HeaderValue = HeaderValue::from_static("identity;q=1, *;q=0");
 static ACCEPT_LANGUAGE_VALUE: HeaderValue = HeaderValue::from_static("en-US,en;q=0.8");
 
 /// A tiktok client
@@ -21,6 +23,11 @@ impl Client {
     /// Make a new [`Client`].
     pub fn new() -> Self {
         let mut headers = HeaderMap::new();
+        headers.insert(reqwest::header::ACCEPT, ACCEPT_VALUE.clone());
+        headers.insert(
+            reqwest::header::ACCEPT_ENCODING,
+            ACCEPT_ENCODING_VALUE.clone(),
+        );
         headers.insert(
             reqwest::header::ACCEPT_LANGUAGE,
             ACCEPT_LANGUAGE_VALUE.clone(),
