@@ -4,9 +4,9 @@ mod model;
 pub use self::client::Client;
 pub use self::model::FeedCursor;
 pub use self::model::InvalidScrapedPostPageError;
+pub use self::model::Post;
 pub use self::model::ScrapedPostPage;
 pub use url::Url;
-pub use self::model::Post;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
