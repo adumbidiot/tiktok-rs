@@ -28,13 +28,13 @@ pub struct Video {
 
     /// The download video source?
     pub download_addr: VideoSource,
-    
+
     /// The video width
     pub width: u32,
-    
+
     /// The video height
     pub height: u32,
-    
+
     /// The video duration
     pub duration: u64,
 }
