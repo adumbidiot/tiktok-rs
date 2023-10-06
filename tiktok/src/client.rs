@@ -1,4 +1,5 @@
 use crate::Error;
+use crate::FeedCursor;
 use crate::ScrapedPostPage;
 use reqwest::header::HeaderMap;
 use reqwest::header::HeaderValue;
@@ -74,8 +75,8 @@ impl Client {
             .await??)
     }
 
-    /// Get a post.
-    pub async fn get_post(&self, video_id: u64) -> Result<serde_json::Value, Error> {
+    /// Get a feed.
+    pub async fn get_feed(&self, video_id: Option<u64>) -> Result<FeedCursor, Error> {
         let api_host = "api16-normal-c-useast1a.tiktokv.com";
         let app_name = "trill";
         let version_name = "26.1.3";
@@ -86,7 +87,10 @@ impl Client {
         let mut url = Url::parse(&url).unwrap();
         {
             let mut query_pairs = url.query_pairs_mut();
-            query_pairs.append_pair("aweme_id", itoa::Buffer::new().format(video_id));
+
+            if let Some(video_id) = video_id {
+                query_pairs.append_pair("aweme_id", itoa::Buffer::new().format(video_id));
+            }
 
             query_pairs.append_pair("version_name", version_name);
             query_pairs.append_pair("version_code", version_code);
@@ -97,7 +101,7 @@ impl Client {
 
         let user_agent = format!("com.ss.android.ugc.{app_name}/{version_code} (Linux; U; Android 13; en_US; Pixel 7; Build/TD1A.220804.031; Cronet/58.0.2991.0)");
 
-        let json: serde_json::Value = self
+        let json = self
             .client
             .get(url)
             .header(reqwest::header::ACCEPT, "application/json")
@@ -107,9 +111,7 @@ impl Client {
             .error_for_status()?
             .json()
             .await?;
-            
-        
-            
+
         Ok(json)
     }
 }

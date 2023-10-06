@@ -2,6 +2,7 @@ mod client;
 mod model;
 
 pub use self::client::Client;
+pub use self::model::FeedCursor;
 pub use self::model::InvalidScrapedPostPageError;
 pub use self::model::ScrapedPostPage;
 pub use url::Url;
@@ -48,7 +49,7 @@ mod test {
     }
 
     #[tokio::test]
-    async fn get_post() {
+    async fn get_feed_post() {
         let client = Client::new();
         for url in POST_URLS {
             let video_id = Url::parse(url)
@@ -59,7 +60,11 @@ mod test {
                 .expect("missing video id")
                 .parse()
                 .expect("invalid video id");
-            client.get_post(video_id).await.expect("failed to get post");
+            let feed_cursor = client
+                .get_feed(Some(video_id))
+                .await
+                .expect("failed to get post");
+            dbg!(&feed_cursor);
         }
         /*
         client
