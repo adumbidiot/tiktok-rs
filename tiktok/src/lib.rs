@@ -82,7 +82,8 @@ mod test {
                 .error_for_status()
                 .expect("invalid status code")
                 .bytes()
-                .await.expect("failed to download");
+                .await
+                .expect("failed to download");
         }
     }
 }
