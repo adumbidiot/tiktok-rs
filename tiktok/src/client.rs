@@ -35,7 +35,7 @@ impl Client {
 
         let client = reqwest::Client::builder()
             .user_agent(USER_AGENT_STR)
-            // .cookie_store(false)
+            .cookie_store(true)
             // .use_rustls_tls() // native-tls chokes for some reason
             .default_headers(headers)
             .build()

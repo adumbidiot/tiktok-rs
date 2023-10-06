@@ -27,7 +27,13 @@ mod test {
 
     #[tokio::test]
     async fn download_post() {
-        let urls = ["https://www.tiktok.com/t/ZTRQsJaw1/"];
+        // Broken URLs.
+        // Were they deleted?
+        // Old URL format?
+        // "https://vm.tiktok.com/TTPdrksrdc/"
+        // "https://www.tiktok.com/t/ZTRQsJaw1/"
+
+        let urls = ["https://www.tiktok.com/@von.jakoba/video/7270331232595021098"];
         let client = Client::new();
         for url in urls {
             let post = client.get_post(url).await.expect("failed to get post");
@@ -38,9 +44,9 @@ mod test {
                 .keys()
                 .next()
                 .expect("missing item_id");
-            let _download_url = post.get_video_download_url().expect("missing download url");
-            // dbg!(download_url);
-            
+            let download_url = post.get_video_download_url().expect("missing download url");
+            dbg!(download_url.as_str());
+
             /*
             client
                 .client
