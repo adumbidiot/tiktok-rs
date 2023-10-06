@@ -1,0 +1,12 @@
+[package]
+name = "tiktok-cli"
+version = "0.0.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+anyhow = "1.0.75"
+argh = "0.1.12"
+nd-util = { git = "https://github.com/nathaniel-daniel/nd-util-rs", features = [ "download-to-path" ] }
+tiktok = { path = "../tiktok" }
+tokio = { version = "1.32.0", features = [ "rt-multi-thread" ] }
