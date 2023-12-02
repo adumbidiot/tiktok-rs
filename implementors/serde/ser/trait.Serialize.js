@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"tiktok":[["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.193/serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> for <a class=\"struct\" href=\"tiktok/struct.FeedCursor.html\" title=\"struct tiktok::FeedCursor\">FeedCursor</a>"],["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.193/serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> for <a class=\"struct\" href=\"tiktok/struct.Post.html\" title=\"struct tiktok::Post\">Post</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
