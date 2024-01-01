@@ -5,7 +5,7 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-itoa = "1.0.9"
+itoa = "1.0.10"
 once_cell = "1.18.0"
 reqwest = { version = "0.11.22", features = [ "cookies", "json" ], default-features = false }
 scraper = { version = "0.18.1", default-features = false }
