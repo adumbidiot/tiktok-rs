@@ -7,6 +7,6 @@ license = "MIT OR Apache-2.0"
 [dependencies]
 anyhow = "1.0.80"
 argh = "0.1.12"
-nd-util = { git = "https://github.com/nathaniel-daniel/nd-util-rs", features = [ "download-to-path" ] }
+nd-util = { git = "https://github.com/nathaniel-daniel/nd-util-rs", version = "0.0.0", features = [ "download-to-path" ] }
 tiktok = { path = "../tiktok" }
 tokio = { version = "1.36.0", features = [ "rt-multi-thread" ] }
