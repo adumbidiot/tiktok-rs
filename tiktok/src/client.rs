@@ -1,9 +1,7 @@
 use crate::Error;
 use crate::FeedCursor;
-use crate::ScrapedPostPage;
 use reqwest::header::HeaderMap;
 use reqwest::header::HeaderValue;
-use scraper::Html;
 use url::Url;
 
 const USER_AGENT_STR: &str = "Mozilla/5.0";
@@ -44,35 +42,6 @@ impl Client {
             .expect("failed to build client");
 
         Self { client }
-    }
-
-    /// GET a page as html and parse it.
-    async fn get_html<F, T>(&self, url: &str, func: F) -> Result<T, Error>
-    where
-        F: FnOnce(Html) -> T + Send + 'static,
-        T: Send + 'static,
-    {
-        let text = self
-            .client
-            .get(url)
-            .send()
-            .await?
-            .error_for_status()?
-            .text()
-            .await?;
-
-        Ok(tokio::task::spawn_blocking(move || {
-            let html = Html::parse_document(text.as_str());
-            func(html)
-        })
-        .await?)
-    }
-
-    /// Scrape a tiktok post.
-    pub async fn scrape_post(&self, url: &str) -> Result<ScrapedPostPage, Error> {
-        Ok(self
-            .get_html(url, |html| ScrapedPostPage::from_html(&html))
-            .await??)
     }
 
     /// Get a feed.
