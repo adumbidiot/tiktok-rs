@@ -42,6 +42,14 @@ async fn async_main(options: Options) -> anyhow::Result<()> {
         Err(_error) => options.post.parse()?,
     };
 
+    let file_name = format!("{video_id}.mp4");
+    let out_path = options.out_dir.join(file_name);
+
+    if tokio::fs::try_exists(&out_path).await? {
+        eprintln!("file exists, skipping...");
+        return Ok(());
+    }
+
     eprintln!("fetching feed...");
     let feed_cursor = client
         .get_feed(Some(video_id))
@@ -59,8 +67,6 @@ async fn async_main(options: Options) -> anyhow::Result<()> {
 
     eprintln!("downloading video from \"{}\"", video_url.as_str());
 
-    let file_name = format!("{video_id}.mp4");
-    let out_path = options.out_dir.join(file_name);
     nd_util::download_to_path(&client.client, video_url.as_str(), out_path).await?;
 
     Ok(())
