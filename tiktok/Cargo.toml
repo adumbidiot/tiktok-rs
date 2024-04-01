@@ -11,11 +11,11 @@ reqwest = { version = "0.11.24", features = [ "cookies", "json" ], default-featu
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
 thiserror = "1.0.57"
-tokio = { version = "1.36.0", features = [ "rt" ] }
+tokio = { version = "1.37.0", features = [ "rt" ] }
 url ={ version = "2.5.0", features = [ "serde" ] }
 
 [dev-dependencies]
-tokio = { version = "1.36.0", features = [ "macros" ] }
+tokio = { version = "1.37.0", features = [ "macros" ] }
 
 [features]
 default = ["native-tls"]
