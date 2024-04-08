@@ -1,8 +1,13 @@
 use crate::Error;
 use crate::FeedCursor;
+use rand::Rng;
 use reqwest::header::HeaderMap;
 use reqwest::header::HeaderValue;
+use std::time::SystemTime;
 use url::Url;
+use uuid::Uuid;
+
+const API_HOST: &str = "api22-normal-c-useast2a.tiktokv.com";
 
 const USER_AGENT_STR: &str = "Mozilla/5.0";
 
@@ -46,15 +51,24 @@ impl Client {
 
     /// Get a feed.
     pub async fn get_feed(&self, video_id: Option<u64>) -> Result<FeedCursor, Error> {
-        let api_host = "api16-normal-c-useast1a.tiktokv.com";
-        let app_name = "trill";
-        let version_name = "26.1.3";
-        let version_code = "260103";
+        // let app_name = "musical_ly";
+        let version_name = "34.1.2";
+        let version_code = "2023401020";
 
-        let url = format!("https://{api_host}/aweme/v1/feed/");
+        let url = format!("https://{API_HOST}/aweme/v1/feed/");
         // This should always be valid
         let mut url = Url::parse(&url).unwrap();
         {
+            let mut rng = rand::thread_rng();
+            let epoch_seconds = SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .map(|duration| duration.as_secs())
+                .unwrap_or(0);
+            let hex_slice = [
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+            ];
+            let hex_distribution = rand::distributions::Slice::new(&hex_slice).unwrap();
+
             let mut query_pairs = url.query_pairs_mut();
 
             if let Some(video_id) = video_id {
@@ -62,13 +76,38 @@ impl Client {
             }
 
             query_pairs.append_pair("version_name", version_name);
+            query_pairs.append_pair("ab_version", version_name);
             query_pairs.append_pair("version_code", version_code);
             query_pairs.append_pair("build_number", version_name);
             query_pairs.append_pair("manifest_version_code", version_code);
             query_pairs.append_pair("update_version_code", version_code);
+
+            query_pairs.append_pair("iid", "7351149742343391009");
+            let device_id = rng.gen_range(7250000000000000000_u64..7351147085025500000_u64);
+            query_pairs.append_pair("device_id", itoa::Buffer::new().format(device_id));
+            query_pairs.append_pair("region", "US");
+            query_pairs.append_pair("os", "android");
+            query_pairs.append_pair("device_type", "Pixel 7");
+            query_pairs.append_pair("device_brand", "Google");
+            query_pairs.append_pair("language", "en");
+            query_pairs.append_pair("os_version", "13");
+            query_pairs.append_pair("ts", itoa::Buffer::new().format(epoch_seconds));
+            let last_install_time = epoch_seconds.saturating_sub(rng.gen_range(86400..1123200));
+            query_pairs.append_pair(
+                "last_install_time",
+                itoa::Buffer::new().format(last_install_time),
+            );
+            query_pairs.append_pair("_rticket", itoa::Buffer::new().format(epoch_seconds * 1000));
+            query_pairs.append_pair("channel", "googleplay");
+            let openudid: String = rng.sample_iter(hex_distribution).take(16).collect();
+            query_pairs.append_pair("openudid", openudid.as_str());
+            query_pairs.append_pair("aid", "0");
+            let cdid = Uuid::new_v4();
+            query_pairs.append_pair("cdid", &cdid.to_string());
         }
 
-        let user_agent = format!("com.ss.android.ugc.{app_name}/{version_code} (Linux; U; Android 13; en_US; Pixel 7; Build/TD1A.220804.031; Cronet/58.0.2991.0)");
+        let package = format!("com.zhiliaoapp.musically/{version_code}"); // com.ss.android.ugc.{app_name}/{version_code}
+        let user_agent = format!("{package} (Linux; U; Android 13; en_US; Pixel 7; Build/TD1A.220804.031; Cronet/58.0.2991.0)");
 
         let json = self
             .client
