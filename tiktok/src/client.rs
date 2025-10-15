@@ -59,7 +59,7 @@ impl Client {
         // This should always be valid
         let mut url = Url::parse(&url).unwrap();
         {
-            let mut rng = rand::thread_rng();
+            let mut rng = rand::rng();
             let epoch_seconds = SystemTime::now()
                 .duration_since(SystemTime::UNIX_EPOCH)
                 .map(|duration| duration.as_secs())
@@ -67,7 +67,7 @@ impl Client {
             let hex_slice = [
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
             ];
-            let hex_distribution = rand::distributions::Slice::new(&hex_slice).unwrap();
+            let hex_distribution = rand::distr::slice::Choose::new(&hex_slice).unwrap();
 
             let mut query_pairs = url.query_pairs_mut();
 
@@ -83,7 +83,7 @@ impl Client {
             query_pairs.append_pair("update_version_code", version_code);
 
             query_pairs.append_pair("iid", "7351149742343391009");
-            let device_id = rng.gen_range(7250000000000000000_u64..7351147085025500000_u64);
+            let device_id = rng.random_range(7250000000000000000_u64..7351147085025500000_u64);
             query_pairs.append_pair("device_id", itoa::Buffer::new().format(device_id));
             query_pairs.append_pair("region", "US");
             query_pairs.append_pair("os", "android");
@@ -92,7 +92,7 @@ impl Client {
             query_pairs.append_pair("language", "en");
             query_pairs.append_pair("os_version", "13");
             query_pairs.append_pair("ts", itoa::Buffer::new().format(epoch_seconds));
-            let last_install_time = epoch_seconds.saturating_sub(rng.gen_range(86400..1123200));
+            let last_install_time = epoch_seconds.saturating_sub(rng.random_range(86400..1123200));
             query_pairs.append_pair(
                 "last_install_time",
                 itoa::Buffer::new().format(last_install_time),
