@@ -2,8 +2,10 @@
 resolver = "3"
 members = [
     "tiktok",
-    "tikwm",
     "tiktok-cli",
+    
+    "tikwm",
+    "tikwm-cli",
 ]
 
 [profile.release]

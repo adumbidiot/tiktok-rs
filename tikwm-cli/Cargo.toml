@@ -1,0 +1,14 @@
+[package]
+name = "tikwm-cli"
+version = "0.0.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+
+[dependencies]
+anyhow = "1.0.100"
+argh = "0.1.13"
+nd-util = { git = "https://github.com/nathaniel-daniel/nd-util-rs", version = "0.0.0", features = [ "download-to-path" ] }
+tikwm = { version = "0.0.0", path = "../tikwm" }
+tokio = { version = "1.48.0", features = ["rt-multi-thread"] }
+url = "2.5.7"
