@@ -1254,6 +1254,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "tikwm"
+version = "0.0.0"
+dependencies = [
+ "reqwest",
+ "serde",
+ "thiserror",
+ "tokio",
+]
+
+[[package]]
 name = "time"
 version = "0.3.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
