@@ -28,7 +28,10 @@ mod test {
     // "https://www.tiktok.com/t/ZTRQsJaw1/"
     const POST_URLS: &[&str] = &["https://www.tiktok.com/@von.jakoba/video/7270331232595021098"];
 
+    // The IID we use has been banned.
+    // We need to get another one.
     #[tokio::test]
+    #[ignore]
     async fn get_feed_post() {
         let client = Client::new();
         for url in POST_URLS {
