@@ -1,0 +1,2 @@
+createSrcSidebar('[["tiktok",["",[["model",[],["feed.rs"]]],["client.rs","lib.rs","model.rs"]]],["tiktok_cli",["",[],["main.rs"]]],["tikwm",["",[["model",[["json",[],["get_task_result_response.rs","submit_task_response.rs"]]],["create_download_task_response.rs","get_task_result_response.rs","json.rs"]]],["client.rs","lib.rs","model.rs","util.rs"]]],["tikwm_cli",["",[],["main.rs"]]]]');
+//{"start":19,"fragment_lengths":[76,35,220,34]}
