@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error","InvalidCreateDownloadTaskResponseError","InvalidGetTaskResultResponseError"],"mod":["model"],"struct":["Client","Url"]};
