@@ -5,6 +5,7 @@ pub(crate) struct SubmitTaskResponseDataDetail {
     pub title: String,
     pub download_url: String,
     pub play_url: String,
+    pub duration: u64,
 }
 
 #[derive(Debug, serde::Deserialize)]

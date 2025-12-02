@@ -62,7 +62,6 @@ async fn async_main(options: Options) -> anyhow::Result<()> {
         .get_task_result(&create_download_response.task_id)
         .await
         .context("failed to create video download")?;
-    ensure!(!download_task_result.download_url.is_empty());
 
     eprintln!(
         "downloading video from \"{}\"",

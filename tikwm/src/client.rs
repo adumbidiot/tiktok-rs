@@ -35,7 +35,7 @@ impl Client {
             .json()
             .await?;
 
-        Ok(response.into())
+        Ok(response.try_into()?)
     }
 
     /// Get a task result.
@@ -50,7 +50,7 @@ impl Client {
             .json()
             .await?;
 
-        Ok(response.into())
+        Ok(response.try_into()?)
     }
 }
 
