@@ -50,7 +50,7 @@ impl Client {
             .json()
             .await?;
 
-        Ok(response.into())
+        Ok(response.try_into()?)
     }
 }
 

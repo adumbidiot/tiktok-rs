@@ -4,6 +4,7 @@ mod util;
 
 pub use self::client::Client;
 pub use self::model::create_download_task_response::InvalidJsonError as InvalidCreateDownloadTaskResponseError;
+pub use self::model::get_task_result_response::InvalidJsonError as InvalidGetTaskResultResponseError;
 pub use url::Url;
 
 /// The library error type
@@ -14,6 +15,9 @@ pub enum Error {
 
     #[error("invalid create download task response")]
     InvalidCreateDownloadTaskResponse(#[from] InvalidCreateDownloadTaskResponseError),
+
+    #[error("invalid get task result response")]
+    InvalidGetTaskResultResponse(#[from] InvalidGetTaskResultResponseError),
 }
 
 #[cfg(test)]
