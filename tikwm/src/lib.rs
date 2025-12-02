@@ -3,12 +3,17 @@ pub mod model;
 mod util;
 
 pub use self::client::Client;
+pub use self::model::create_download_task_response::InvalidJsonError as InvalidCreateDownloadTaskResponseError;
+pub use url::Url;
 
 /// The library error type
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("http error")]
     Reqwest(#[from] reqwest::Error),
+
+    #[error("invalid create download task response")]
+    InvalidCreateDownloadTaskResponse(#[from] InvalidCreateDownloadTaskResponseError),
 }
 
 #[cfg(test)]
