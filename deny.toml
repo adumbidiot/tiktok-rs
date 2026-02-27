@@ -16,24 +16,11 @@ confidence-threshold = 0.93
 private = { ignore = true }
 allow = [ 
     "Apache-2.0",
-    "MIT",
-    "ISC",
-    "Zlib",
     "BSD-3-Clause",
-    "MPL-2.0",
-    "Unicode-DFS-2016",
+    "ISC",
+    "MIT",
+    "OpenSSL",
     "Unicode-3.0",
-    "CDLA-Permissive-2.0",
-]
-exceptions = [
-    { name = "ring", allow = [ "MIT", "ISC", "OpenSSL" ] },
-]
-
-[[licenses.clarify]]
-name = "ring"
-expression = "MIT AND ISC AND OpenSSL"
-license-files = [
-    { path = "LICENSE", hash = 0xbd0eed23 },
 ]
 
 [[licenses.clarify]]
@@ -61,12 +48,11 @@ license-files = [
 multiple-versions = "warn"
 highlight = "all"
 skip = [    
-    { name = "windows_x86_64_msvc", version = "0.52.6" },
-    { name = "windows_x86_64_gnu", version = "0.52.6" },
-    { name = "windows-targets", version = "0.52.6" },
-    { name = "windows-sys", version = "0.59.0" },
-    { name = "windows-sys", version = "0.60.2" },
-    { name = "getrandom", version = "0.2.16" },
+    # { name = "windows_x86_64_msvc", version = "0" },
+    # { name = "windows_x86_64_gnu", version = "0" },
+    # { name = "windows-targets", version = "0" },
+    { name = "windows-sys", version = "0" },
+    { name = "getrandom", version = "0.3.4" },
 ]
 
 # Mostly soundness denies since the advisory lacks a section for soundess bugs

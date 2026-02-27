@@ -1,6 +1,6 @@
 use crate::Error;
 use crate::FeedCursor;
-use rand::Rng;
+use rand::RngExt;
 use reqwest::header::HeaderMap;
 use reqwest::header::HeaderValue;
 use std::time::SystemTime;
