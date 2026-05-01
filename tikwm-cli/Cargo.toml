@@ -7,8 +7,8 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 anyhow = "1.0.102"
-argh = "0.1.14"
+argh = "0.1.19"
 nd-util = { git = "https://github.com/nathaniel-daniel/nd-util-rs", version = "0.0.0", features = [ "download-to-path" ] }
 tikwm = { version = "0.0.0", path = "../tikwm" }
-tokio = { version = "1.49.0", features = [ "rt-multi-thread", "fs" ] }
+tokio = { version = "1.50.0", features = [ "rt-multi-thread", "fs" ] }
 url = "2.5.8"
